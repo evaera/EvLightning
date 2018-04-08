@@ -38,7 +38,7 @@ There are a number of options that you can pass in a third argument to `Lightnin
 | transparency | The transparency of the main bolt. Transparency is reduced at every fork. | 0.4 | Number
 | thickness | The thickness of the main bolt. Thickness is reduced at every fork. | 1 | Number
 | max_depth | The maximum depth that forks can reach off the main bolt, which is depth 0. | 3 | Integer
-| color | The color of the bolt | White | BrickColor
+| color | The color of the bolt | White | BrickColor or Color3
 | material | The material of the bolt | Enum.Material.Neon | Enum.Material
 | decay | The number of seconds for the bolt to exist after being drawn. | *Infinite* | Number
 

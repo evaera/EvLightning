@@ -3,8 +3,8 @@
 -- Author: Eryn Lynn <eryn.io>
 -- Username: evaera
 -- Release Date: 3/23/2016
--- Updated Date: 4/7/2018
--- Version: 1.2
+-- Updated Date: 4/8/2018
+-- Version: 1.2.1
 
 --[[
 	Options:
@@ -20,6 +20,9 @@
 		material: Enum.Material
 
 	Changelog:
+		- 4/8/2018
+			- Allow Color3 to be passed as a color
+			- General optimizations
 		- 4/7/2018
 			- Updated to use Random
 			- Check for Vector3 with typeof
@@ -33,12 +36,17 @@ local Debris = game:GetService("Debris")
 local class = require(script.Class)
 
 local LightningBolt = class() do
-	LightningBolt._version = 1
+	local partTemplate = Instance.new("Part")
+	partTemplate.Anchored = true
+	partTemplate.CanCollide = false
+	partTemplate.TopSurface = Enum.SurfaceType.Smooth
+	partTemplate.BottomSurface = Enum.SurfaceType.Smooth
 
 	function LightningBolt:init(origin, goal, options)
 		if typeof(origin) ~= "Vector3" then
 			error("LightningBolt: `from` must be a Vector3")
 		end
+
 		if typeof(goal) ~= "Vector3" then
 			error("LightningBolt: `to` must be a Vector3")
 		end
@@ -55,6 +63,20 @@ local LightningBolt = class() do
 		self.origin = origin
 		self.goal = goal
 		self.rep = self.options.bends or 6
+
+		if self.options.color then
+			if typeof(self.options.color) == "Color3" then
+				self.color = self.options.color
+			elseif typeof(self.options.color) == "BrickColor" then
+				self.color = self.options.color.Color
+			else
+				error("LightningBolt: `Options.color` must be a Color3 or BrickColor")
+			end
+		else
+			self.color = BrickColor.new("White").Color
+		end
+
+		self.material = self.options.material or Enum.Material.Neon
 
 		self.branches = {}
 		self.lines = {
@@ -79,12 +101,13 @@ local LightningBolt = class() do
 
 	function LightningBolt:GetLines()
 		local lines = {}
-		for _, line in pairs(self.lines) do
-			lines[#lines+1] = line
+		for i = 1, #self.lines do
+			lines[i] = self.lines[i]
 		end
-		for _, branch in pairs(self.branches) do
-			for _, line in pairs(branch:GetLines()) do
-				lines[#lines+1] = line
+		for b = 1, #self.branches do
+			local branchLines = self.branches[b]:GetLines()
+			for i = 1, #branchLines do
+				lines[#lines + 1] = branchLines[i]
 			end
 		end
 		return lines
@@ -109,14 +132,11 @@ local LightningBolt = class() do
 	end
 
 	function LightningBolt:bend()
-		local runLines = {}
-		for _, line in pairs(self.lines) do
-			runLines[#runLines + 1] = line
-		end
-		for _, line in pairs(runLines) do
+		for i = 1, #self.lines do
+			local line = self.lines[i]
 			local origGoal = line.goal
 
-			local mid = line.origin+((line.goal-line.origin).unit * (line.goal-line.origin).magnitude) * self.random:NextInteger(40, 60) / 100
+			local mid = line.origin + ((line.goal - line.origin).unit * (line.goal - line.origin).magnitude) * self.random:NextInteger(40, 60) / 100
 			line.goal = self:displace(mid, line.goal, self.random:NextInteger(-530, 530) / 100, self.random:NextNumber())
 
 			self.lines[#self.lines + 1] = {
@@ -139,34 +159,29 @@ local LightningBolt = class() do
 	end
 
 	function LightningBolt:Draw(parent)
-		local model = parent or Instance.new("Model", game.Workspace)
+		local model = Instance.new("Model")
 		self.model = model
 		model.Name = "LightningBolt"
 
-		for _, line in pairs(self.lines) do
-			local part = Instance.new("Part", model)
+		local template = partTemplate:Clone()
+		template.Material = self.material
+		template.Color = self.color
 
-			part.FormFactor = "Custom"
-			part.Anchored = true
-			part.CanCollide = false
-			part.BrickColor = self.options.color or BrickColor.new("White")
-			part.Material = self.options.material or Enum.Material.Neon
-			part.TopSurface = "Smooth"
-			part.BottomSurface = "Smooth"
-
-			part.Size = Vector3.new(1-line.depth*2*0.1, 1-line.depth*2*0.1, (line.origin-line.goal).magnitude+0.5)
-			part.CFrame = CFrame.new((line.goal+line.origin)/2, line.goal)
+		local lines = self:GetLines()
+		for i = 1, #lines do
+			local line = lines[i]
+			local part = template:Clone()
+			part.Size = Vector3.new(1 - line.depth * 2 * 0.1, 1 - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
+			part.CFrame = CFrame.new((line.goal + line.origin) / 2, line.goal)
 			part.Transparency = line.transparency
+			part.Parent = model
 		end
 
-		for _, branch in pairs(self.branches) do
-			branch:Draw(model)
-		end
-
+		model.Parent = parent or workspace
 		self.drew = true
 
 		if self.options.decay then
-			Debris:AddItem(model, tonumber(self.options.decay))
+			Debris:AddItem(model, tonumber(self.options.decay) or 0)
 			self.destroyed = true
 		end
 	end
