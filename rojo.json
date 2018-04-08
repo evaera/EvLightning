@@ -3,8 +3,8 @@
   "servePort": 8000,
   "partitions": {
     "game": {
-      "path": "./lib",
-      "target": "ReplicatedStorage"
+      "path": "./EvLightning",
+      "target": "ReplicatedStorage.EvLightning"
     }
   }
 }
