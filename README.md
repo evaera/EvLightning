@@ -2,6 +2,10 @@
 
 EvLightning is a Roblox Lua library that aims to generate realistic-looking lightning bolts. This could be used to easily add lightning strike effects to your game.
 
+<p align="center">
+  <img src="https://thumbs.gfycat.com/ClumsyAdolescentCollie-size_restricted.gif" alt="Lightning demo" height="500">
+</p>
+
 ## Usage
 
 ```lua
