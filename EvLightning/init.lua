@@ -7,16 +7,15 @@
 -- Version: 1.2.1
 
 --[[
-	Options:
+	Options: (See more thorough documentation on GitHub, link above.)
 		seed: The numerical seed for the lightning bolt
-		depth: Initial depth to start at
 		bends: Number of bends to put into the bolt
 		fork_bends: Number of bends to put into forks
 		fork_chance: Chance to fork
-		transparency: Initial transparency
+		transparency: Initial transparency of the bolt
 		max_depth: max fork depth
-		color: brickcolor
-		decay: seconds
+		color: BrickColor ror Color3
+		decay: seconds for the bolt to exist
 		material: Enum.Material
 
 	Changelog:
