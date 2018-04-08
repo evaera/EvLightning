@@ -1,0 +1,10 @@
+{
+  "name": "EvLightning",
+  "servePort": 8000,
+  "partitions": {
+    "game": {
+      "path": "./lib",
+      "target": "ReplicatedStorage"
+    }
+  }
+}
