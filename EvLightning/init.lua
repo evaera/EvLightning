@@ -1,34 +1,8 @@
 -- Name: EvLightning
 -- Repository and Docs: https://github.com/evaera/EvLightning
--- Author: Eryn Lynn <eryn.io>
+-- Author: Eryn L. K. <eryn.io>
 -- Username: evaera
--- Release Date: 3/23/2016
--- Updated Date: 4/8/2018
--- Version: 1.2.1
-
---[[
-	Options: (See more thorough documentation on GitHub, link above.)
-		seed: The numerical seed for the lightning bolt
-		bends: Number of bends to put into the bolt
-		fork_bends: Number of bends to put into forks
-		fork_chance: Chance to fork
-		transparency: Initial transparency of the bolt
-		max_depth: max fork depth
-		color: BrickColor ror Color3
-		decay: seconds for the bolt to exist
-		material: Enum.Material
-
-	Changelog:
-		- 4/8/2018
-			- Allow Color3 to be passed as a color
-			- General optimizations
-		- 4/7/2018
-			- Updated to use Random
-			- Check for Vector3 with typeof
-			- Change API to allow for .new instantiation
-		- 3/9/2018
-			- Added material option
-			- Changed default material to Neon
+-- Original Written Date: 3/23/2016
 --]]
 
 local Debris = game:GetService("Debris")
