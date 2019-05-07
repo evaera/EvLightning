@@ -58,9 +58,10 @@ local LightningBolt = class() do
 			self.random = Random.new()
 		end
 
-		self.depth = self.options.depth or 0
 		self.origin = origin
 		self.goal = goal
+		self.depth = self.options.depth or 0
+		self.thickness = self.options.thickness or 1
 		self.rep = self.options.bends or 6
 
 		if self.options.color then
@@ -170,7 +171,7 @@ local LightningBolt = class() do
 		for i = 1, #lines do
 			local line = lines[i]
 			local part = template:Clone()
-			part.Size = Vector3.new(self.options.thickness - line.depth * 2 * 0.1, self.options.thickness - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
+			part.Size = Vector3.new(self.thickness - line.depth * 2 * 0.1, self.thickness - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
 			part.CFrame = CFrame.new((line.goal + line.origin) / 2, line.goal)
 			part.Transparency = line.transparency
 			part.Parent = model
