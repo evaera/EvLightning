@@ -41,6 +41,7 @@ There are a number of options that you can pass in a third argument to `Lightnin
 | color | The color of the bolt | White | BrickColor or Color3
 | material | The material of the bolt | Enum.Material.Neon | Enum.Material
 | decay | The number of seconds for the bolt to exist after being drawn. | *Infinite* | Number
+| tween_time | Tweening Time option to fade out, must be less or equal to decay time | 0 | Number
 
 Note that the `fork_chance` option is not an equal chance for every bend in the bolt. The chance is distributed in a gradient down the length of the bolt, meaning that if the fork_chance is 50, then at the very top it will be 0, at the middle it will be 25, and at the very bottom it will be 50. This is done so that less forks are generated towards the top, which makes the bolt look more realistic. If you need to create upwards-forking lightning, then simply reverse the to and from arguments.
 
