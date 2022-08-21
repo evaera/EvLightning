@@ -3,8 +3,8 @@
 -- Author: Eryn Lynn <eryn.io>
 -- Username: evaera
 -- Release Date: 3/23/2016
--- Updated Date: 4/8/2018
--- Version: 1.2.1
+-- Updated Date: 8/21/2022
+-- Version: 1.3
 
 --[[
 	Options: (See more thorough documentation on GitHub, link above.)
@@ -21,8 +21,7 @@
 		
 	Changelog:
 		- 8/21/2022
-			- Adding Tweening Optomizations
-			- General optimizations
+			- Adding Tweening Options
 		- 4/8/2018
 			- Allow Color3 to be passed as a color
 			- General optimizations
