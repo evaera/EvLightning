@@ -1,17 +1,53 @@
 -- Name: EvLightning
 -- Repository and Docs: https://github.com/evaera/EvLightning
--- Author: Eryn L. K. <eryn.io>
+-- Author: Eryn Lynn <eryn.io>
 -- Username: evaera
--- Original Written Date: 3/23/2016
+-- Release Date: 3/23/2016
+-- Updated Date: 4/8/2018
+-- Version: 1.2.1
+
+--[[
+	Options: (See more thorough documentation on GitHub, link above.)
+		seed: The numerical seed for the lightning bolt
+		bends: Number of bends to put into the bolt
+		fork_bends: Number of bends to put into forks
+		fork_chance: Chance to fork
+		transparency: Initial transparency of the bolt
+		max_depth: max fork depth
+		color: BrickColor or Color3
+		decay: seconds for the bolt to exist
+		material: Enum.Material
+		tween_time: Tweening for fade out, must be less or equal to decay.
+		
+	Changelog:
+		- 8/21/2022
+			- Adding Tweening Optomizations
+			- General optimizations
+		- 4/8/2018
+			- Allow Color3 to be passed as a color
+			- General optimizations
+		- 4/7/2018
+			- Updated to use Random
+			- Check for Vector3 with typeof
+			- Change API to allow for .new instantiation
+		- 3/9/2018
+			- Added material option
+			- Changed default material to Neon
 --]]
 
 local Debris = game:GetService("Debris")
 local class = require(script.Class)
+local TweenService = game:GetService("TweenService")
+
+local LightningBoltPropertyTable = { --Set tweening info here
+	Transparency = 1;
+}
 
 local LightningBolt = class() do
 	local partTemplate = Instance.new("Part")
 	partTemplate.Anchored = true
 	partTemplate.CanCollide = false
+	partTemplate.CastShadow = false
 	partTemplate.TopSurface = Enum.SurfaceType.Smooth
 	partTemplate.BottomSurface = Enum.SurfaceType.Smooth
 
@@ -32,10 +68,9 @@ local LightningBolt = class() do
 			self.random = Random.new()
 		end
 
+		self.depth = self.options.depth or 0
 		self.origin = origin
 		self.goal = goal
-		self.depth = self.options.depth or 0
-		self.thickness = self.options.thickness or 1
 		self.rep = self.options.bends or 6
 
 		if self.options.color then
@@ -145,10 +180,15 @@ local LightningBolt = class() do
 		for i = 1, #lines do
 			local line = lines[i]
 			local part = template:Clone()
-			part.Size = Vector3.new(self.thickness - line.depth * 2 * 0.1, self.thickness - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
+			part.Size = Vector3.new(1 - line.depth * 2 * 0.1, 1 - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
 			part.CFrame = CFrame.new((line.goal + line.origin) / 2, line.goal)
 			part.Transparency = line.transparency
 			part.Parent = model
+			if self.options.tween_time then
+				local Tweening = TweenInfo.new(self.options.tween_time,Enum.EasingStyle.Linear,Enum.EasingDirection.Out,0,false,0)
+				local TweenExecute = TweenService:Create(part, Tweening, LightningBoltPropertyTable)
+				TweenExecute:Play()
+			end
 		end
 
 		model.Parent = parent or workspace
