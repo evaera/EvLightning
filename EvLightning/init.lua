@@ -102,7 +102,7 @@ local LightningBolt = class() do
 	end
 
 	function LightningBolt:displace(point, goal, radius, rotations)
-		return (CFrame.new(point, goal) * CFrame.new(math.sin(math.pi * rotations * 2) * radius, math.cos(math.pi * rotations * 2) * radius, 0)).p
+		return (CFrame.new(point, goal) * CFrame.new(math.sin(math.pi * rotations * 2) * radius, math.cos(math.pi * rotations * 2) * radius, 0)).Position
 	end
 
 	function LightningBolt:bend()
