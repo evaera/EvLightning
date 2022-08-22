@@ -1,6 +1,6 @@
 -- Name: EvLightning
 -- Repository and Docs: https://github.com/evaera/EvLightning
--- Author: Eryn Lynn <eryn.io>
+-- Author: Eryn L. K. <eryn.io>
 -- Username: evaera
 -- Release Date: 3/23/2016
 -- Updated Date: 8/21/2022
@@ -13,6 +13,7 @@
 		fork_bends: Number of bends to put into forks
 		fork_chance: Chance to fork
 		transparency: Initial transparency of the bolt
+		thickness: Thickness of the main bolt, Reduced at every fork
 		max_depth: max fork depth
 		color: BrickColor or Color3
 		decay: seconds for the bolt to exist
@@ -179,7 +180,7 @@ local LightningBolt = class() do
 		for i = 1, #lines do
 			local line = lines[i]
 			local part = template:Clone()
-			part.Size = Vector3.new(1 - line.depth * 2 * 0.1, 1 - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
+			part.Size = Vector3.new(self.thickness - line.depth * 2 * 0.1, self.thickness - line.depth * 2 * 0.1, (line.origin - line.goal).magnitude + 0.5)
 			part.CFrame = CFrame.new((line.goal + line.origin) / 2, line.goal)
 			part.Transparency = line.transparency
 			part.Parent = model
