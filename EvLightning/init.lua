@@ -72,6 +72,7 @@ local LightningBolt = class() do
 		self.origin = origin
 		self.goal = goal
 		self.rep = self.options.bends or 6
+		self.thickness = self.options.thickness or 1
 
 		if self.options.color then
 			if typeof(self.options.color) == "Color3" then
